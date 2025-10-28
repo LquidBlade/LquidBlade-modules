@@ -1,12 +1,11 @@
-# echo_safe.py
+# spam_safe.py
 # безопасная версия модуля Spam для LQUIDBLADE
-# автор: исправлено для безопасного dlmod
 
 import asyncio
 from pyrogram import Client, types
 
 async def answer(message: types.Message, text: str):
-    """Замена utils.answer"""
+    """Функция для ответа вместо utils.answer"""
     await message.reply(text)
 
 class SpamMod:
@@ -14,11 +13,9 @@ class SpamMod:
 
     async def spam_cmd(self, app: Client, message: types.Message, args: str):
         reply = message.reply_to_message
-
         if not reply:
             if not args:
                 return await answer(message, "Нет аргументов и реплая")
-
             args_ = args.split(maxsplit=1)
             if len(args_) == 1:
                 if args_[0].isdigit():
@@ -26,7 +23,6 @@ class SpamMod:
                 return await answer(message, "Не указано кол-во сообщений первым аргументом")
             if not args_[0].isdigit():
                 return await answer(message, "Кол-во сообщений должно быть целым числом")
-
             await message.delete()
             for _ in range(int(args_[0])):
                 await message.reply(args_[1], quote=False)
@@ -34,10 +30,8 @@ class SpamMod:
 
         if not args:
             return await answer(message, "Не указано кол-во сообщений")
-
         if not args.isdigit():
             return await answer(message, "Кол-во сообщений должно быть целым числом")
-
         await message.delete()
         for _ in range(int(args)):
             await reply.copy(message.chat.id, reply_to_message_id=reply.message_id)
